@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[Paper Title] — FlyRank ML Internship Research</title>
+<meta name="description" content="[One-sentence paper summary — replace before publishing]">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EFEEE6;
+    --paper-raised:#F6F5EF;
+    --ink:#1C2321;
+    --ink-soft:#4B5550;
+    --rule:#C9CBB8;
+    --rule-strong:#9AA192;
+    --bronze:#9C7A3C;
+    --bronze-soft:#E9DFC7;
+    --teal:#3B6E5E;
+    --teal-soft:#DCE8E3;
+    --max:760px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Source Serif 4", Georgia, serif;
+    font-size:18px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--bronze-soft); }
+  h1,h2,h3{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600;
+    line-height:1.1;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  .mono{ font-family:"IBM Plex Mono", monospace; }
+  a{ color:var(--teal); text-decoration-thickness:1px; text-underline-offset:3px; }
+  a:hover{ color:var(--bronze); }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--bronze); outline-offset:3px; }
+
+  /* Top status bar */
+  .statusbar{
+    background:var(--ink);
+    color:var(--paper-raised);
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12px;
+    letter-spacing:.04em;
+    text-align:center;
+    padding:7px 12px;
+  }
+  .statusbar a{ color:var(--paper-raised); }
+
+  /* Sticky nav */
+  nav.toc{
+    position:sticky; top:0; z-index:10;
+    background:rgba(239,238,230,.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--rule);
+    overflow-x:auto;
+    white-space:nowrap;
+  }
+  nav.toc ul{
+    list-style:none; margin:0; padding:10px 20px;
+    display:flex; gap:22px; max-width:960px; margin-inline:auto;
+  }
+  nav.toc a{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--ink-soft); text-decoration:none;
+  }
+  nav.toc a:hover{ color:var(--bronze); }
+
+  main{ max-width:var(--max); margin:0 auto; padding:0 24px; }
+
+  /* Header / Title block */
+  header.title-block{
+    max-width:var(--max); margin:0 auto; padding:64px 24px 40px;
+    border-bottom:1px solid var(--rule);
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace; font-size:12px;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--bronze);
+    margin-bottom:14px;
+  }
+  h1.paper-title{ font-size:clamp(32px, 5vw, 46px); margin-bottom:16px; }
+  .subtitle{ font-size:19px; color:var(--ink-soft); font-style:italic; max-width:56ch; }
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:18px; margin-top:28px;
+    font-family:"IBM Plex Mono", monospace; font-size:12.5px; color:var(--ink-soft);
+  }
+  .meta-row span strong{ color:var(--ink); display:block; font-size:11px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:2px; }
+
+  section{ padding:52px 0; border-bottom:1px solid var(--rule); }
+  section:last-of-type{ border-bottom:none; }
+  section h2{
+    font-size:26px; margin-bottom:22px;
+    display:flex; align-items:baseline; gap:12px;
+  }
+  section h2 .num{
+    font-family:"IBM Plex Mono", monospace; font-size:14px; color:var(--rule-strong);
+  }
+  section h3{ font-size:18px; margin:28px 0 10px; color:var(--ink); }
+  p{ margin:0 0 16px; }
+  ul, ol{ margin:0 0 16px; padding-left:22px; }
+  li{ margin-bottom:6px; }
+
+  /* Abstract box */
+  .abstract-box{
+    background:var(--paper-raised);
+    border:1px solid var(--rule);
+    border-left:3px solid var(--bronze);
+    padding:26px 28px;
+    font-size:17px;
+  }
+  .abstract-box p::first-letter{
+    font-family:"Fraunces", serif; font-size:2.6em; font-weight:600;
+    float:left; line-height:.8; padding-right:8px; padding-top:4px;
+    color:var(--bronze);
+  }
+
+  /* callouts */
+  .callout{
+    background:var(--paper-raised); border:1px solid var(--rule);
+    padding:16px 18px; font-size:15.5px; color:var(--ink-soft);
+    margin:18px 0;
+  }
+  .callout.warn{ border-left:3px solid var(--bronze); }
+  .callout strong{ color:var(--ink); }
+
+  table{ width:100%; border-collapse:collapse; font-size:15.5px; margin:18px 0; }
+  th, td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--rule); }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); }
+
+  code, .placeholder{
+    font-family:"IBM Plex Mono", monospace; font-size:.88em;
+    background:var(--bronze-soft); color:#5A4620;
+    padding:1px 5px; border-radius:2px;
+  }
+
+  /* Leaderboard / results chart */
+  .scoreboard{ margin:22px 0; }
+  .score-row{ display:grid; grid-template-columns:120px 1fr 70px; align-items:center; gap:14px; margin-bottom:12px; }
+  .score-label{ font-family:"IBM Plex Mono", monospace; font-size:13px; color:var(--ink-soft); }
+  .score-track{ background:var(--paper-raised); border:1px solid var(--rule); height:22px; position:relative; }
+  .score-fill{ height:100%; }
+  .score-fill.model{ background:var(--teal); }
+  .score-fill.baseline{ background:var(--rule-strong); }
+  .score-val{ font-family:"IBM Plex Mono", monospace; font-size:13px; text-align:right; }
+  figcaption{ font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--ink-soft); margin-top:10px; }
+
+  /* Ranked recommendations — the one place numbered rank badges are earned */
+  .rank-list{ list-style:none; margin:0; padding:0; counter-reset:rankctr; }
+  .rank-item{
+    counter-increment:rankctr;
+    display:grid; grid-template-columns:44px 1fr; gap:16px;
+    padding:16px 0; border-top:1px solid var(--rule);
+  }
+  .rank-item:first-child{ border-top:none; }
+  .rank-item::before{
+    content:"#" counter(rankctr);
+    font-family:"IBM Plex Mono", monospace; font-weight:600; font-size:15px;
+    color:var(--bronze); background:var(--bronze-soft);
+    width:44px; height:44px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .rank-item h3{ margin:0 0 4px; }
+  .rank-item p{ margin:0; color:var(--ink-soft); font-size:15.5px; }
+
+  .repro-links a{ display:block; margin-bottom:8px; }
+
+  footer{
+    max-width:var(--max); margin:0 auto; padding:40px 24px 80px;
+    font-size:14.5px; color:var(--ink-soft);
+  }
+  footer .credit{
+    background:var(--teal-soft); border:1px solid var(--rule);
+    padding:18px 20px; margin-top:10px;
+  }
+  footer .credit a{ font-weight:600; }
+
+  @media (max-width:600px){
+    body{ font-size:16.5px; }
+    .score-row{ grid-template-columns:80px 1fr 60px; }
+    nav.toc ul{ gap:16px; padding:10px 16px; }
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{ opacity:0; transform:translateY(10px); transition:opacity .5s ease, transform .5s ease; }
+    .reveal.in{ opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="statusbar">DRAFT — replace all <span class="placeholder">[bracketed]</span> placeholders before publishing · public-safety pass required</div>
+
+<nav class="toc">
+  <ul>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#intro">Intro</a></li>
+    <li><a href="#data">Data</a></li>
+    <li><a href="#method">Method</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#limitations">Limitations</a></li>
+    <li><a href="#recommendations">Recommendations</a></li>
+    <li><a href="#reproducibility">Reproducibility</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ul>
+</nav>
+
+<header class="title-block">
+  <div class="eyebrow">Research Paper · FlyRank ML Internship</div>
+  <h1 class="paper-title">[Your Paper Title — plain-language, states the question or finding]</h1>
+  <p class="subtitle">[One-sentence subtitle: what problem this addresses and for whom]</p>
+  <div class="meta-row">
+    <span><strong>Author</strong>[Your name]</span>
+    <span><strong>Date</strong>[Month Year]</span>
+    <span><strong>Status</strong>[Draft / Final]</span>
+    <span><strong>Repo</strong><a href="[your repo URL]">[repo link]</a></span>
+  </div>
+</header>
+
+<main>
+
+  <section id="abstract">
+    <h2><span class="num">§0</span> Abstract</h2>
+    <div class="abstract-box reveal">
+      <p>
+        [<strong>Sentence 1 — Question:</strong> state the research question in one sentence.]
+        [<strong>Sentence 2 — Why it matters:</strong> the real content problem at FlyRank this answers.]
+        [<strong>Sentence 3 — Method:</strong> what data and approach you used, in plain language.]
+        [<strong>Sentence 4 — Result:</strong> the headline honest finding, including its limits.]
+        [<strong>Sentence 5 — So what:</strong> the practical implication or recommendation.]
+      </p>
+    </div>
+    <div class="callout warn">
+      <strong>Reminder:</strong> five sentences, one idea each — question → why it matters → method → result → so what. Don't let this grow past a short paragraph.
+    </div>
+  </section>
+
+  <section id="intro">
+    <h2><span class="num">§1</span> Introduction / Problem Statement</h2>
+    <p>[Describe the real content/ranking problem FlyRank faces — in general terms, no client names or private details. E.g., "Pages in category X plateau in ranking despite content updates" or "editors lack a way to prioritize which pages to revise first."]</p>
+    <p>[Frame the research question precisely: what will this paper answer, and what would a useful answer let FlyRank's team actually do differently?]</p>
+    <p>[One or two sentences on prior approach / why the problem hasn't already been solved trivially — sets up why your method is needed.]</p>
+  </section>
+
+  <section id="data">
+    <h2><span class="num">§2</span> Data</h2>
+    <table>
+      <tr><th>Field</th><th>Detail</th></tr>
+      <tr><td>Release / source</td><td>[e.g., FlyRank ML Internship dataset, v[X]]</td></tr>
+      <tr><td>Tables used</td><td>[table names — public-safe, no client identifiers]</td></tr>
+      <tr><td>Date window</td><td>[start–end date range]</td></tr>
+      <tr><td>Row / record count</td><td>[N before exclusions] → [N after exclusions]</td></tr>
+      <tr><td>Unit of analysis</td><td>[e.g., one row per page per week]</td></tr>
+    </table>
+    <h3>Exclusions</h3>
+    <ul>
+      <li>[Exclusion 1 — what was removed and why, e.g., "records with fewer than N days of history (insufficient signal)"]</li>
+      <li>[Exclusion 2 — e.g., "pages tied to client accounts under active dispute — excluded for privacy, not analytical reasons"]</li>
+      <li>[Exclusion 3 — any deduplication, outlier handling, or scope-narrowing decision]</li>
+    </ul>
+    <div class="callout warn">
+      <strong>Public-safety check:</strong> confirm no client names, real URLs, or private search queries appear anywhere in this section or its supporting tables/screenshots.
+    </div>
+  </section>
+
+  <section id="method">
+    <h2><span class="num">§3</span> Methodology</h2>
+    <h3>Assumptions</h3>
+    <p>[State the 2–3 assumptions the analysis rests on, e.g., independence between pages, stationarity of ranking signals over the window, etc.]</p>
+    <h3>Label definition</h3>
+    <p>[Precisely define the target/label — what counts as a positive vs. negative outcome, and the exact rule or threshold used.]</p>
+    <h3>Features</h3>
+    <ul>
+      <li>[Feature group 1 — e.g., content structure signals]</li>
+      <li>[Feature group 2 — e.g., historical ranking trajectory]</li>
+      <li>[Feature group 3 — e.g., internal linking signals]</li>
+    </ul>
+    <h3>Baseline</h3>
+    <p>[Describe the baseline you compare against — e.g., "most-recent-rank persistence" or "mean of category" — and why it's a fair, non-trivial baseline.]</p>
+    <h3>Validation design</h3>
+    <p>[Train/validation/test split logic — must be time-aware if this is time-series-like data. State split ratios and how you avoided shuffling across time.]</p>
+    <h3>Leakage checks</h3>
+    <ul>
+      <li>[Check 1 — e.g., "confirmed no feature is computed using data from after the label window"]</li>
+      <li>[Check 2 — e.g., "verified no duplicate pages appear in both train and test splits"]</li>
+      <li>[Check 3 — any feature you deliberately dropped because it leaked the label]</li>
+    </ul>
+  </section>
+
+  <section id="results">
+    <h2><span class="num">§4</span> Results</h2>
+    <p>[One framing sentence: what metric you're comparing and on which split.]</p>
+
+    <figure class="scoreboard reveal">
+      <div class="score-row">
+        <div class="score-label">Model</div>
+        <div class="score-track"><div class="score-fill model" style="width:[XX]%"></div></div>
+        <div class="score-val">[0.XX]</div>
+      </div>
+      <div class="score-row">
+        <div class="score-label">Baseline</div>
+        <div class="score-track"><div class="score-fill baseline" style="width:[YY]%"></div></div>
+        <div class="score-val">[0.YY]</div>
+      </div>
+      <figcaption>Fig. 1 — [Metric name] on the held-out [test/validation] split, same data for both rows. PLACEHOLDER VALUES — replace with real numbers and re-check the bar widths match.</figcaption>
+    </figure>
+
+    <p>[Second chart or table goes here if needed — e.g., feature importance, error breakdown by segment. Replace this paragraph with the real description.]</p>
+
+    <div class="callout">
+      <strong>How to read this:</strong> [one sentence on what would make this result meaningful vs. not — sets up the honest limitations section rather than overselling the chart.]
+    </div>
+  </section>
+
+  <section id="limitations">
+    <h2><span class="num">§5</span> Limitations &amp; Honest Framing</h2>
+    <ul>
+      <li>[Limitation 1 — e.g., sample size / statistical power constraints]</li>
+      <li>[Limitation 2 — e.g., the label definition has a known edge case that isn't handled]</li>
+      <li>[Limitation 3 — e.g., results may not generalize beyond the date window studied]</li>
+      <li>[Limitation 4 — anything a skeptical reviewer would flag first]</li>
+    </ul>
+    <p>[One direct sentence stating what this result does <em>not</em> support claiming — the "don't oversell this" sentence.]</p>
+  </section>
+
+  <section id="recommendations">
+    <h2><span class="num">§6</span> Ranked Recommendations</h2>
+    <p>An action playbook, ordered by expected impact given the evidence above — not by ease of implementation.</p>
+    <ol class="rank-list">
+      <li class="rank-item">
+        <div>
+          <h3>[Recommendation 1 — highest expected impact]</h3>
+          <p>[What to do, and which result above supports it.]</p>
+        </div>
+      </li>
+      <li class="rank-item">
+        <div>
+          <h3>[Recommendation 2]</h3>
+          <p>[What to do, and which result above supports it.]</p>
+        </div>
+      </li>
+      <li class="rank-item">
+        <div>
+          <h3>[Recommendation 3 — lowest confidence / most speculative]</h3>
+          <p>[State the confidence level honestly — this is the one you're least sure about.]</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="reproducibility">
+    <h2><span class="num">§7</span> Reproducibility</h2>
+    <div class="repro-links">
+      <a href="[link to notebook 1]">→ [Notebook 1 name — e.g., data cleaning &amp; EDA]</a>
+      <a href="[link to notebook 2]">→ [Notebook 2 name — e.g., modeling &amp; validation]</a>
+      <a href="[link to notebook 3]">→ [Notebook 3 name — e.g., demo outline &amp; shareable cuts]</a>
+      <a href="[repo URL]">→ Full repository</a>
+    </div>
+    <p>[One sentence on environment/dependencies needed to rerun this, if relevant.]</p>
+  </section>
+
+  <section id="acknowledgments">
+    <h2><span class="num">§8</span> Acknowledgments &amp; Data Credit</h2>
+    <p>[Any thanks to mentors, reviewers, or teammates.]</p>
+    <div class="callout" style="background:var(--teal-soft); border-left:3px solid var(--teal);">
+      Built on the FlyRank ML Internship dataset — <a href="https://flyrank.ai" target="_blank" rel="noopener">flyrank.ai</a>.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>[Optional closing line — license, contact, or last-updated date.]</p>
+  <div class="credit">
+    Data source credit: this research is built on the FlyRank ML Internship dataset.
+    Learn more at <a href="https://flyrank.ai" target="_blank" rel="noopener">flyrank.ai</a>.
+  </div>
+</footer>
+
+<script>
+  // Subtle reveal-on-scroll, respects prefers-reduced-motion via the CSS gate above.
+  const els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && els.length){
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:.2});
+    els.forEach(el=>io.observe(el));
+  } else {
+    els.forEach(el=>el.classList.add('in'));
+  }
+</script>
+
+</body>
+</html>
